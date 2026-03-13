@@ -9,7 +9,7 @@ public class Costumer extends User {
     public Costumer() {
     }
 
-    public Costumer(int idUser, String idRegister, String fullName, int idIdentityCard, String email, int phoneNumber, String address, String role, Boolean isActive, String idCostumer, String password) {
+    public Costumer(int idUser, int idRegister, String fullName, int idIdentityCard, String email, int phoneNumber, String address, String role, Boolean isActive, String idCostumer, String password) {
         super(idUser, idRegister, fullName, idIdentityCard, email, phoneNumber, address, role, isActive);
     }
 

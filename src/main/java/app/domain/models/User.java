@@ -2,7 +2,7 @@ package app.domain.models;
 
 public abstract class User {
     int idUser;
-    String idRegister;
+    int idRegister;
     String fullName;
     int idIdentityCard;
     String email;
@@ -15,7 +15,7 @@ public abstract class User {
     public User() {
     }
 
-    public User(int idUser, String idRegister, String fullName, int idIdentityCard, String email, int phoneNumber, String address, String role, Boolean isActive) {
+    public User(int idUser, int idRegister, String fullName, int idIdentityCard, String email, int phoneNumber, String address, String role, Boolean isActive) {
         this.idUser = idUser;
         this.idRegister = idRegister;
         this.fullName = fullName;
@@ -35,11 +35,11 @@ public abstract class User {
         this.idUser = idUser;
     }
 
-    public String getIdRegister() {
+    public int getIdRegister() {
         return idRegister;
     }  
 
-    public void setIdRegister(String idRegister) {
+    public void setIdRegister(int idRegister) {
         this.idRegister = idRegister;
     }
 

@@ -1,24 +1,24 @@
 package app.domain.models;
 
-public class BitacoraTransacciones {
-    int idRegister;
-    String typeOperation;
-    String responsableUser;
-    String descriptionOperation;
-    String resultOperation;
-    int idOrigen;
+public class TransactionLog {
+    private int idRegister;
+    private String typeOperation;
+    private String responsableUser;
+    private String descriptionOperation;
+    private String resultOperation;
+    private int idOrigin;
 
 
-    public BitacoraTransacciones() {
+    public TransactionLog() {
     }
 
-    public BitacoraTransacciones(int idRegister, String typeOperation, String responsableUser, String descriptionOperation, String resultOperation, int idOrigen) {
+    public TransactionLog(int idRegister, String typeOperation, String responsableUser, String descriptionOperation, String resultOperation, int idOrigen) {
         this.idRegister = idRegister;
         this.typeOperation = typeOperation;
         this.responsableUser = responsableUser;
         this.descriptionOperation = descriptionOperation;
         this.resultOperation = resultOperation;
-        this.idOrigen = idOrigen;
+        this.idOrigin = idOrigen;
     }
 
     public int getIdRegister() {
@@ -61,17 +61,17 @@ public class BitacoraTransacciones {
         this.resultOperation = resultOperation;
     }
 
-    public int getIdOrigen() {
-        return idOrigen;
+    public int getIdOrigin() {
+        return idOrigin;
     }
 
-    public void setIdOrigen(int idOrigen) {
-        this.idOrigen = idOrigen;
+    public void setIdOrigin(int idOrigen) {
+        this.idOrigin = idOrigen;
     }
 
     @Override
     public String toString() {
-        return "BitacoraTransacciones [idRegister=" + idRegister + ", typeOperation=" + typeOperation + ", responsableUser=" + responsableUser + ", descriptionOperation=" + descriptionOperation + ", resultOperation=" + resultOperation + ", idOrigen=" + idOrigen + "]";
+        return "TransactionLog [idRegister=" + idRegister + ", typeOperation=" + typeOperation + ", responsableUser=" + responsableUser + ", descriptionOperation=" + descriptionOperation + ", resultOperation=" + resultOperation + ", idOrigin=" + idOrigin + "]";
     }
 
 }

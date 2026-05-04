@@ -8,7 +8,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "enterprise_clients")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EnterpriseClientEntity extends ClientEntity {
 
     @Column(nullable = false)

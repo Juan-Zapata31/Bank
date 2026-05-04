@@ -13,7 +13,10 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "bank_loans")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class BankLoanEntity {
 
     @Id

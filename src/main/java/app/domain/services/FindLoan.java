@@ -18,7 +18,8 @@ public class FindLoan {
 
     public BankLoan findById(int loanId) {
         BankLoan loan = loanPort.findById(loanId);
-        if (loan == null) throw new NotFoundException("No existe un préstamo con ese ID");
+        if (loan == null)
+            throw new NotFoundException("No existe un préstamo con ese ID");
         return loan;
     }
 

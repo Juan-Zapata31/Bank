@@ -9,7 +9,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "employees")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeEntity extends UserEntity {
 
     @Enumerated(EnumType.STRING)

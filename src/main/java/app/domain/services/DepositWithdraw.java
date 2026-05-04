@@ -21,7 +21,7 @@ public class DepositWithdraw {
     private final TransactionLogService transactionLogService;
 
     public DepositWithdraw(AccountPort accountPort,
-                           TransactionLogService transactionLogService) {
+            TransactionLogService transactionLogService) {
         this.accountPort = accountPort;
         this.transactionLogService = transactionLogService;
     }

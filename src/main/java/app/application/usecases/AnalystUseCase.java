@@ -19,8 +19,8 @@ public class AnalystUseCase {
     private final TransactionLogService transactionLogService;
 
     public AnalystUseCase(ApproveLoan approveLoan, RejectLoan rejectLoan,
-                          DisburseLoan disburseLoan, FindLoan findLoan,
-                          TransactionLogService transactionLogService) {
+            DisburseLoan disburseLoan, FindLoan findLoan,
+            TransactionLogService transactionLogService) {
         this.approveLoan = approveLoan;
         this.rejectLoan = rejectLoan;
         this.disburseLoan = disburseLoan;
@@ -29,7 +29,7 @@ public class AnalystUseCase {
     }
 
     public BankLoan approveLoan(int loanId, BigDecimal approvedAmount,
-                                BigDecimal interestRate, User analyst) {
+            BigDecimal interestRate, User analyst) {
         return approveLoan.approveLoan(loanId, approvedAmount, interestRate, analyst);
     }
 
@@ -41,11 +41,22 @@ public class AnalystUseCase {
         disburseLoan.disburseLoan(loanId, analyst);
     }
 
-    public BankLoan findLoanById(int id) { return findLoan.findById(id); }
-    public List<BankLoan> findAllLoans() { return findLoan.findAll(); }
-    public List<BankLoan> findLoansByClientId(Long clientId) { return findLoan.findByClientId(clientId); }
+    public BankLoan findLoanById(int id) {
+        return findLoan.findById(id);
+    }
 
-    public List<TransactionLog> findAllLogs() { return transactionLogService.findAll(); }
+    public List<BankLoan> findAllLoans() {
+        return findLoan.findAll();
+    }
+
+    public List<BankLoan> findLoansByClientId(Long clientId) {
+        return findLoan.findByClientId(clientId);
+    }
+
+    public List<TransactionLog> findAllLogs() {
+        return transactionLogService.findAll();
+    }
+
     public List<TransactionLog> findLogsByProduct(String productId) {
         return transactionLogService.findByProduct(productId);
     }

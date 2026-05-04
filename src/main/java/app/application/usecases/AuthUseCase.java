@@ -32,7 +32,6 @@ public class AuthUseCase {
                 user.getUserId(),
                 user.getUsername(),
                 user.getRoles().name(),
-                user.getCompanyNit()
-        );
+                user.getCompanyNit());
     }
 }

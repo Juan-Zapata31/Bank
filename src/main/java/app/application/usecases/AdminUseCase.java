@@ -18,8 +18,8 @@ public class AdminUseCase {
     private final PasswordEncoder passwordEncoder;
 
     public AdminUseCase(CreateUser createUser, FindUser findUser,
-                        app.domain.ports.UserPort userPort,
-                        PasswordEncoder passwordEncoder) {
+            app.domain.ports.UserPort userPort,
+            PasswordEncoder passwordEncoder) {
         this.createUser = createUser;
         this.findUser = findUser;
         this.userPort = userPort;
@@ -28,7 +28,8 @@ public class AdminUseCase {
 
     public void createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (user.getUserState() == null) user.setUserState(UserState.ACTIVE);
+        if (user.getUserState() == null)
+            user.setUserState(UserState.ACTIVE);
         createUser.createUser(user);
     }
 
@@ -39,7 +40,15 @@ public class AdminUseCase {
         userPort.update(user);
     }
 
-    public void deleteUser(Long userId) { userPort.deleteByUserId(userId); }
-    public User findUser(Long userId) { return findUser.findByUserId(userId); }
-    public List<User> findAllUsers() { return findUser.findAll(); }
+    public void deleteUser(Long userId) {
+        userPort.deleteByUserId(userId);
+    }
+
+    public User findUser(Long userId) {
+        return findUser.findByUserId(userId);
+    }
+
+    public List<User> findAllUsers() {
+        return findUser.findAll();
+    }
 }

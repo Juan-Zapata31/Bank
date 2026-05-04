@@ -8,7 +8,8 @@ import lombok.Getter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter @AllArgsConstructor
+@Getter
+@AllArgsConstructor
 public class LoanResponse {
     private int bankLoanId;
     private BankLoanType bankLoanType;

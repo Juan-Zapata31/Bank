@@ -18,8 +18,8 @@ public class LoanAdapter implements LoanPort {
     private final ClientAdapter clientAdapter;
 
     public LoanAdapter(LoanRepository loanRepository,
-                       ClientRepository clientRepository,
-                       ClientAdapter clientAdapter) {
+            ClientRepository clientRepository,
+            ClientAdapter clientAdapter) {
         this.loanRepository = loanRepository;
         this.clientRepository = clientRepository;
         this.clientAdapter = clientAdapter;

@@ -14,7 +14,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TransactionEntity {
 
     @Id

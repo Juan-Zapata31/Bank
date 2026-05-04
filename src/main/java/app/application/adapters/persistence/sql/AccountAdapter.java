@@ -18,8 +18,8 @@ public class AccountAdapter implements AccountPort {
     private final ClientAdapter clientAdapter;
 
     public AccountAdapter(AccountRepository accountRepository,
-                          ClientRepository clientRepository,
-                          ClientAdapter clientAdapter) {
+            ClientRepository clientRepository,
+            ClientAdapter clientAdapter) {
         this.accountRepository = accountRepository;
         this.clientRepository = clientRepository;
         this.clientAdapter = clientAdapter;

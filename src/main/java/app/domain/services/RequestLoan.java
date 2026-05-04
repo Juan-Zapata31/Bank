@@ -22,7 +22,7 @@ public class RequestLoan {
     private final TransactionLogService transactionLogService;
 
     public RequestLoan(LoanPort loanPort, ClientPort clientPort,
-                       TransactionLogService transactionLogService) {
+            TransactionLogService transactionLogService) {
         this.loanPort = loanPort;
         this.clientPort = clientPort;
         this.transactionLogService = transactionLogService;

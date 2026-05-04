@@ -27,7 +27,8 @@ public class JwtUtil {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userId", userId);
         claims.put("role", role);
-        if (companyNit != null) claims.put("companyNit", companyNit);
+        if (companyNit != null)
+            claims.put("companyNit", companyNit);
         return Jwts.builder()
                 .claims(claims)
                 .subject(username)
@@ -43,17 +44,24 @@ public class JwtUtil {
                 .parseSignedClaims(token).getPayload();
     }
 
-    public String extractUsername(String token) { return extractAllClaims(token).getSubject(); }
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
 
     public Long extractUserId(String token) {
         Object id = extractAllClaims(token).get("userId");
-        if (id instanceof Integer) return ((Integer) id).longValue();
+        if (id instanceof Integer)
+            return ((Integer) id).longValue();
         return (Long) id;
     }
 
-    public String extractRole(String token) { return (String) extractAllClaims(token).get("role"); }
+    public String extractRole(String token) {
+        return (String) extractAllClaims(token).get("role");
+    }
 
-    public String extractCompanyNit(String token) { return (String) extractAllClaims(token).get("companyNit"); }
+    public String extractCompanyNit(String token) {
+        return (String) extractAllClaims(token).get("companyNit");
+    }
 
     public boolean isTokenValid(String token) {
         try {

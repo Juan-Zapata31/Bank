@@ -8,7 +8,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "banking_products")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GeneralBankingProductEntity {
 
     @Id

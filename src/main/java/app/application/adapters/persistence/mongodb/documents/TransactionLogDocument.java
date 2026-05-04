@@ -14,7 +14,9 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Document(collection = "transaction_logs")
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class TransactionLogDocument {
 
     @Id

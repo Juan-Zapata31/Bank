@@ -29,7 +29,7 @@ public class LoanController {
     private final ClientPort clientPort;
 
     public LoanController(AnalystUseCase analystUseCase, CommercialUseCase commercialUseCase,
-                          UserPort userPort, ClientPort clientPort) {
+            UserPort userPort, ClientPort clientPort) {
         this.analystUseCase = analystUseCase;
         this.commercialUseCase = commercialUseCase;
         this.userPort = userPort;
@@ -39,7 +39,7 @@ public class LoanController {
     // CommercialEmployee or IndividualClient requests a loan
     @PostMapping
     public ResponseEntity<LoanResponse> requestLoan(@Valid @RequestBody LoanRequest request,
-                                                     Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User requester = userPort.findByUserId(details.getUserId());
         BankLoan loan = toLoan(request);
@@ -50,8 +50,8 @@ public class LoanController {
     // InternalAnalyst approves
     @PostMapping("/{id}/approve")
     public ResponseEntity<LoanResponse> approveLoan(@PathVariable int id,
-                                                     @Valid @RequestBody ApproveLoanRequest request,
-                                                     Authentication authentication) {
+            @Valid @RequestBody ApproveLoanRequest request,
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User analyst = userPort.findByUserId(details.getUserId());
         BankLoan saved = analystUseCase.approveLoan(id, request.getApprovedAmount(),
@@ -62,7 +62,7 @@ public class LoanController {
     // InternalAnalyst rejects
     @PostMapping("/{id}/reject")
     public ResponseEntity<LoanResponse> rejectLoan(@PathVariable int id,
-                                                    Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User analyst = userPort.findByUserId(details.getUserId());
         BankLoan saved = analystUseCase.rejectLoan(id, analyst);
@@ -72,7 +72,7 @@ public class LoanController {
     // InternalAnalyst disburses
     @PostMapping("/{id}/disburse")
     public ResponseEntity<String> disburseLoan(@PathVariable int id,
-                                               Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User analyst = userPort.findByUserId(details.getUserId());
         analystUseCase.disburseLoan(id, analyst);

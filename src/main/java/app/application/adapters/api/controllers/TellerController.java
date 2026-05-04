@@ -30,7 +30,7 @@ public class TellerController {
 
     @PostMapping("/accounts")
     public ResponseEntity<AccountResponse> openAccount(@Valid @RequestBody AccountRequest request,
-                                                        Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         Account account = toAccount(request);
         Account saved = tellerUseCase.openAccount(account, details.getUserId(), details.getUsername());
@@ -51,7 +51,7 @@ public class TellerController {
 
     @PostMapping("/deposits")
     public ResponseEntity<String> deposit(@Valid @RequestBody DepositWithdrawRequest request,
-                                          Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         tellerUseCase.deposit(request.getAccountNumber(), request.getAmount(),
                 details.getUserId(), details.getUsername());
@@ -60,7 +60,7 @@ public class TellerController {
 
     @PostMapping("/withdrawals")
     public ResponseEntity<String> withdraw(@Valid @RequestBody DepositWithdrawRequest request,
-                                           Authentication authentication) {
+            Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         tellerUseCase.withdraw(request.getAccountNumber(), request.getAmount(),
                 details.getUserId(), details.getUsername());

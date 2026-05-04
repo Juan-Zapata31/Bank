@@ -8,7 +8,10 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "clients")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class ClientEntity {
 

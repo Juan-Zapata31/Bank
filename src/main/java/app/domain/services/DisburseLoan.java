@@ -28,7 +28,7 @@ public class DisburseLoan {
     private final TransactionLogService transactionLogService;
 
     public DisburseLoan(LoanPort loanPort, AccountPort accountPort,
-                        TransactionLogService transactionLogService) {
+            TransactionLogService transactionLogService) {
         this.loanPort = loanPort;
         this.accountPort = accountPort;
         this.transactionLogService = transactionLogService;

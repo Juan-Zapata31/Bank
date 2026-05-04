@@ -9,7 +9,8 @@ import lombok.Getter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Getter @AllArgsConstructor
+@Getter
+@AllArgsConstructor
 public class AccountResponse {
     private int accountId;
     private Long clientId;

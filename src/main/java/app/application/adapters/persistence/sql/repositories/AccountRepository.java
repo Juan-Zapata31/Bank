@@ -8,6 +8,8 @@ import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, Integer> {
     Optional<AccountEntity> findByAccountId(int accountId);
+
     List<AccountEntity> findByClient_ClientId(Long clientId);
+
     boolean existsByAccountId(int accountId);
 }

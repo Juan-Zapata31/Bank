@@ -9,8 +9,11 @@ import java.util.List;
 
 public interface TransferRepository extends JpaRepository<TransactionEntity, Integer> {
     List<TransactionEntity> findByOriginAccount(Integer originAccount);
+
     List<TransactionEntity> findByCreatorUserId(Long creatorUserId);
+
     List<TransactionEntity> findByTransactionState(TransactionState state);
+
     List<TransactionEntity> findByTransactionStateAndCreatedAtBefore(
             TransactionState state, LocalDateTime threshold);
 }

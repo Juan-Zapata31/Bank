@@ -10,7 +10,10 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "natural_clients")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class NaturalClientEntity extends ClientEntity {
 
     @Column(nullable = false)

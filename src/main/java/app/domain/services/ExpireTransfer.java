@@ -24,7 +24,7 @@ public class ExpireTransfer {
     private long timeoutMinutes;
 
     public ExpireTransfer(TransferPort transferPort,
-                          TransactionLogService transactionLogService) {
+            TransactionLogService transactionLogService) {
         this.transferPort = transferPort;
         this.transactionLogService = transactionLogService;
     }

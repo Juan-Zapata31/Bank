@@ -18,13 +18,15 @@ public class FindUser {
 
     public User findByUserId(Long userId) {
         User user = userPort.findByUserId(userId);
-        if (user == null) throw new NotFoundException("No existe un usuario con ese ID");
+        if (user == null)
+            throw new NotFoundException("No existe un usuario con ese ID");
         return user;
     }
 
     public User findByUsername(String username) {
         User user = userPort.findByUsername(username);
-        if (user == null) throw new NotFoundException("No existe un usuario con ese username");
+        if (user == null)
+            throw new NotFoundException("No existe un usuario con ese username");
         return user;
     }
 

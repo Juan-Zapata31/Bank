@@ -29,7 +29,7 @@ public class ApproveLoan {
     }
 
     public BankLoan approveLoan(int loanId, BigDecimal approvedAmount,
-                                BigDecimal interestRate, User analyst) {
+            BigDecimal interestRate, User analyst) {
         if (analyst == null || analyst.getRoles() != Roles.InternalAnalyst) {
             throw new BusinessException("NO_PERMISOS_APROBAR", "No tiene permisos para aprobar préstamos");
         }

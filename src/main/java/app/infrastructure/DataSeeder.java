@@ -230,4 +230,3 @@ public class DataSeeder implements ApplicationRunner {
         return c;
     }
 }
-

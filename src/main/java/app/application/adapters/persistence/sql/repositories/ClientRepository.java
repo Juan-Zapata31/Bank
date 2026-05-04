@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
     Optional<ClientEntity> findByDocumentNumber(String documentNumber);
+
     boolean existsByDocumentNumber(String documentNumber);
 }

@@ -21,7 +21,7 @@ public class RejectTransfer {
     private final TransactionLogService transactionLogService;
 
     public RejectTransfer(TransferPort transferPort,
-                          TransactionLogService transactionLogService) {
+            TransactionLogService transactionLogService) {
         this.transferPort = transferPort;
         this.transactionLogService = transactionLogService;
     }

@@ -19,7 +19,8 @@ public class FindTransfer {
 
     public Transaction findById(int transferId) {
         Transaction transfer = transferPort.findById(transferId);
-        if (transfer == null) throw new NotFoundException("No existe una transferencia con ese ID");
+        if (transfer == null)
+            throw new NotFoundException("No existe una transferencia con ese ID");
         return transfer;
     }
 

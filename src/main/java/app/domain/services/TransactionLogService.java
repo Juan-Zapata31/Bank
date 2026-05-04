@@ -21,9 +21,9 @@ public class TransactionLogService {
     }
 
     public void log(OperationType operationType, TransactionType transactionType,
-                    Long userId, String username, TransactionState state,
-                    String affectedProductId, String description,
-                    Map<String, Object> detail) {
+            Long userId, String username, TransactionState state,
+            String affectedProductId, String description,
+            Map<String, Object> detail) {
         TransactionLog log = new TransactionLog();
         log.setOperationType(operationType);
         log.setTransactionType(transactionType);

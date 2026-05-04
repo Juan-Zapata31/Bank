@@ -17,7 +17,7 @@ public class TellerUseCase {
     private final FindAccount findAccount;
 
     public TellerUseCase(OpenAccount openAccount, DepositWithdraw depositWithdraw,
-                         FindAccount findAccount) {
+            FindAccount findAccount) {
         this.openAccount = openAccount;
         this.depositWithdraw = depositWithdraw;
         this.findAccount = findAccount;
@@ -35,6 +35,11 @@ public class TellerUseCase {
         depositWithdraw.withdraw(accountNumber, amount, tellerId, username);
     }
 
-    public Account findAccount(int accountNumber) { return findAccount.findByNumber(accountNumber); }
-    public List<Account> findByClientId(Long clientId) { return findAccount.findByClientId(clientId); }
+    public Account findAccount(int accountNumber) {
+        return findAccount.findByNumber(accountNumber);
+    }
+
+    public List<Account> findByClientId(Long clientId) {
+        return findAccount.findByClientId(clientId);
+    }
 }

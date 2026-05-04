@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface TransactionLogMongoRepository extends MongoRepository<TransactionLogDocument, String> {
     List<TransactionLogDocument> findByAffectedProductId(String affectedProductId);
+
     List<TransactionLogDocument> findByResponsableUser(String responsableUser);
 }

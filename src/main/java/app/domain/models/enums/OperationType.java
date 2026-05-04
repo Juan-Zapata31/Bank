@@ -1,4 +1,5 @@
 package app.domain.models.enums;
+
 public enum OperationType {
     ACCOUNT_OPENED,
     TRANSFER_CREATED, TRANSFER_EXECUTED, TRANSFER_REJECTED, TRANSFER_EXPIRED,

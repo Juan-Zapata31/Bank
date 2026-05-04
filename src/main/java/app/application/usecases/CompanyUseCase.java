@@ -24,8 +24,8 @@ public class CompanyUseCase {
     private final RequestLoan requestLoan;
 
     public CompanyUseCase(CreateTransfer createTransfer, ApproveTransfer approveTransfer,
-                          RejectTransfer rejectTransfer, FindTransfer findTransfer,
-                          FindAccount findAccount, FindLoan findLoan, RequestLoan requestLoan) {
+            RejectTransfer rejectTransfer, FindTransfer findTransfer,
+            FindAccount findAccount, FindLoan findLoan, RequestLoan requestLoan) {
         this.createTransfer = createTransfer;
         this.approveTransfer = approveTransfer;
         this.rejectTransfer = rejectTransfer;
@@ -68,7 +68,9 @@ public class CompanyUseCase {
                     try {
                         Account a = findAccount.findByNumber(t.getOriginAccount());
                         return companyNit.equals(getClientNit(a));
-                    } catch (Exception e) { return false; }
+                    } catch (Exception e) {
+                        return false;
+                    }
                 }).collect(Collectors.toList());
     }
 

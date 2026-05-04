@@ -1,9 +1,13 @@
 package app.application.adapters.api.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter; import lombok.NoArgsConstructor; import lombok.Setter;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Getter @Setter @NoArgsConstructor
+@Getter
+@Setter
+@NoArgsConstructor
 public class LoginRequest {
     @NotBlank(message = "El username es obligatorio")
     private String username;

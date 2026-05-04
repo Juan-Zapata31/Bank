@@ -18,7 +18,8 @@ public class FindAccount {
 
     public Account findByNumber(int accountNumber) {
         Account account = accountPort.findByNumber(accountNumber);
-        if (account == null) throw new NotFoundException("No existe una cuenta con ese número");
+        if (account == null)
+            throw new NotFoundException("No existe una cuenta con ese número");
         return account;
     }
 

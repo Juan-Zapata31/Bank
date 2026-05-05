@@ -71,14 +71,14 @@ The architecture follows the **client-server model**: the backend exposes resour
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Juan-Zapata31/Bank.git
-cd Bank
+git clone https://github.com/Juan-Zapata31/financial-system.git
+cd financial-system
 
 # 2. Build and run with Maven
 ./mvnw spring-boot:run
 
 # 3. The API will be available at:
-# http://localhost:8080
+# http://localhost:8081
 ```
 
 

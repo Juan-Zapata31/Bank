@@ -34,3 +34,5 @@ build/
 
 ### Docker ###
 Dockerfile.txt
+requests.http
+Instrucciones de uso de la aplicacion.txt

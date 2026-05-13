@@ -1,0 +1,169 @@
+### Logins
+
+### Login Cajero
+POST http://localhost:8081/auth/login
+Content-Type: application/json
+
+{
+    "username": "teller01",
+    "password": "admin123"
+}
+
+### Login comercial
+POST http://localhost:8081/auth/login
+Content-Type: application/json
+
+{
+    "username": "commercial01",
+    "password": "admin123"
+}
+
+### Login Analista
+POST http://localhost:8081/auth/login
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiSW50ZXJuYWxBbmFseXN0IiwidXNlcklkIjozLCJzdWIiOiJhbmFseXN0MDEiLCJpYXQiOjE3Nzg2MjkzMjksImV4cCI6MTc3ODYzNzMyOX0.zWOeMdddgZ1eiFGagGmYNPw8xNXrHx0kShB172AOKQkYgLXqDmK7lcSZCrxOsWqrIAkQD-8QQSrVM6W2IFdsYA
+Content-Type: application/json
+
+{
+    "username": "analyst01",
+    "password": "admin123"
+}
+
+### Login empleado empresa
+POST http://localhost:8081/auth/login
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiVGVsbGVyIiwidXNlcklkIjozLCJzdWIiOiJ0ZWxsZXIwMSIsImlhdCI6MTc3ODQwMDM5NywiZXhwIjoxNzc4NDA4Mzk3fQ.v5Yc4Ua9aUtkHB6aMPOlZrNEt36iQcsCbfARKv0-eYB-AWyzxtchRjj-qDMcvfI_6RFk0nj7sqnKcEvQJ-iA4g
+Content-Type: application/json
+
+{
+    "username": "companyemp04",
+    "password": "admin123"
+}
+
+### Login Supervisor
+POST http://localhost:8081/auth/login
+Authorization: 
+Content-Type: application/json
+
+{
+    "username": "companysup02",
+    "password": "admin123"
+}
+
+### Cajeros
+
+### Creación de cuentas empresa
+POST http://localhost:8081/teller/accounts
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiVGVsbGVyIiwidXNlcklkIjozLCJzdWIiOiJ0ZWxsZXIwMSIsImlhdCI6MTc3ODQwMDM5NywiZXhwIjoxNzc4NDA4Mzk3fQ.v5Yc4Ua9aUtkHB6aMPOlZrNEt36iQcsCbfARKv0-eYB-AWyzxtchRjj-qDMcvfI_6RFk0nj7sqnKcEvQJ-iA4g
+Content-Type: application/json
+
+{
+    "accountType": "BUSINESS",
+    "clientId": 6,
+    "currency": "COP"
+}
+
+### Creación de cuenta cliente
+POST http://localhost:8081/teller/accounts
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiVGVsbGVyIiwidXNlcklkIjozLCJzdWIiOiJ0ZWxsZXIwMSIsImlhdCI6MTc3ODQwMDM5NywiZXhwIjoxNzc4NDA4Mzk3fQ.v5Yc4Ua9aUtkHB6aMPOlZrNEt36iQcsCbfARKv0-eYB-AWyzxtchRjj-qDMcvfI_6RFk0nj7sqnKcEvQJ-iA4g
+Content-Type: application/json
+
+{
+    "accountType": "SAVINGS",
+    "clientId": 7,
+    "currency": "COP"
+}
+
+### Validar transferencia empresa
+GET http://localhost:8081/teller/accounts/5
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiVGVsbGVyIiwidXNlcklkIjozLCJzdWIiOiJ0ZWxsZXIwMSIsImlhdCI6MTc3ODQwMDk2NCwiZXhwIjoxNzc4NDA4OTY0fQ.FDpaOe2fYMv4GgV4Ae7d43RfUkQM7DpblLfZ6hYa9OpKoy8shHvXRJmVPRd0QV5OanPXFJI07gOKZkyeBYRJAQ
+
+### Validar transferencia cliente
+GET http://localhost:8081/teller/accounts/6
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiVGVsbGVyIiwidXNlcklkIjozLCJzdWIiOiJ0ZWxsZXIwMSIsImlhdCI6MTc3ODQwMDk2NCwiZXhwIjoxNzc4NDA4OTY0fQ.FDpaOe2fYMv4GgV4Ae7d43RfUkQM7DpblLfZ6hYa9OpKoy8shHvXRJmVPRd0QV5OanPXFJI07gOKZkyeBYRJAQ
+
+### Usuarios
+
+### Creación de usuarios
+POST http://localhost:8081/admin/users
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiSW50ZXJuYWxBbmFseXN0IiwidXNlcklkIjozLCJzdWIiOiJhbmFseXN0MDEiLCJpYXQiOjE3Nzg2Mjk3NjMsImV4cCI6MTc3ODYzNzc2M30.x8A1QbxK3ggNymhXsMv2Zh-FiYiB4giVN2LeHO7BaWSEMzJqlnPKlseFk0eKhglx_grmWKKwzLqEGWigfbLDUA
+Content-Type: application/json
+
+{
+    "username": "companyemp04",
+    "password": "admin123",
+    "roles": "CompanyEmployee",
+    "userState": "ACTIVE",
+    "companyNit": "900111222-1"
+}
+
+### Creación de usuario supervisor
+POST http://localhost:8081/admin/users
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiSW50ZXJuYWxBbmFseXN0IiwidXNlcklkIjozLCJzdWIiOiJhbmFseXN0MDEiLCJpYXQiOjE3Nzg2MjkzMjksImV4cCI6MTc3ODYzNzMyOX0.zWOeMdddgZ1eiFGagGmYNPw8xNXrHx0kShB172AOKQkYgLXqDmK7lcSZCrxOsWqrIAkQD-8QQSrVM6W2IFdsYA
+Content-Type: application/json
+
+{
+    "username": "companysup02",
+    "password": "admin123",
+    "roles": "CompanySupervisor",
+    "userState": "ACTIVE",
+    "companyNit": "900111222-1"
+}
+
+### Consulta de usuarios
+GET http://localhost:8081/admin/users
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiSW50ZXJuYWxBbmFseXN0IiwidXNlcklkIjozLCJzdWIiOiJhbmFseXN0MDEiLCJpYXQiOjE3Nzg2MjkzMjksImV4cCI6MTc3ODYzNzMyOX0.zWOeMdddgZ1eiFGagGmYNPw8xNXrHx0kShB172AOKQkYgLXqDmK7lcSZCrxOsWqrIAkQD-8QQSrVM6W2IFdsYA
+Content-Type: application/json
+
+{
+    "username": "teller01",
+    "password": "admin123"
+}
+
+### Clientes
+
+### Creación de clientes
+POST http://localhost:8081/commercial/clients/natural
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiQ29tcGFueVN1cGVydmlzb3IiLCJjb21wYW55Tml0IjoiOTAwMTExMjIyLTEiLCJ1c2VySWQiOjEzLCJzdWIiOiJjb21wYW55c3VwMDIiLCJpYXQiOjE3Nzg2Mjk1MTYsImV4cCI6MTc3ODYzNzUxNn0.AilI4g1J0o3Cs6BkPzCcO-j6FFcFOQL6yP_lied6cJAmg5MJaAd0ZWj9oyQ1A_YFT02mU23h3s_68TCiuKQXPA
+Content-Type: application/json
+
+{
+    "fullName": "Pedro Pérez",
+    "documentNumber": "1100000006",
+    "email": "pperez@mail.com",
+    "phone": "3101111006",
+    "address": "Calle 90 # 20-40",
+    "birthDate": "1988-03-12"
+}
+
+### Transferencias
+
+### Depositos
+POST http://localhost:8081/teller/deposits
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiVGVsbGVyIiwidXNlcklkIjozLCJzdWIiOiJ0ZWxsZXIwMSIsImlhdCI6MTc3ODQwMDM5NywiZXhwIjoxNzc4NDA4Mzk3fQ.v5Yc4Ua9aUtkHB6aMPOlZrNEt36iQcsCbfARKv0-eYB-AWyzxtchRjj-qDMcvfI_6RFk0nj7sqnKcEvQJ-iA4g
+Content-Type: application/json
+
+{
+    "accountNumber": 5,
+    "amount": 5000000
+}
+
+### Transacciones
+POST http://localhost:8081/company/transactions
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiQ29tcGFueUVtcGxveWVlIiwiY29tcGFueU5pdCI6IjkwMDExMTIyMi0xIiwidXNlcklkIjoxNSwic3ViIjoiY29tcGFueWVtcDA0IiwiaWF0IjoxNzc4NDAwNzYxLCJleHAiOjE3Nzc0MDg3NjF9.a7r_SHHQ1BMq05r1gHoZFObTloaGtG0Ndhu0r0Kib9Wiy-2ss3hB2Z8SgpVcCP69eRTOmMQKeS2t3atmGQIdiw
+Content-Type: application/json
+
+{
+    "originAccount": 5,
+    "destinationAccount": 6,
+    "amount": 2000000,
+    "currency": "COP",
+    "description": "Pago de servicios febrero"
+}
+
+### Aprobación de transferencias
+POST http://localhost:8081/company/approvals/2/approve
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiQ29tcGFueVN1cGVydmlzb3IiLCJjb21wYW55Tml0IjoiOTAwMTExMjIyLTEiLCJ1c2VySWQiOjE2LCJzdWIiOiJjb21wYW55c3VwMDIiLCJpYXQiOjE3Nzc4NDAwODU3LCJleHAiOjE3Nzc4NDA4ODV9.4xwIf0SCdsralDrBaligy8cir4YsD_dq-ac4FWr1DCGMGBQ_8nvoT6EtrarFfy_h927qKLamF5XlB4d0pYWtEA
+Content-Type: application/json
+
+
+### New Request
+# Esta petición no tiene URL definida en el collection de Postman

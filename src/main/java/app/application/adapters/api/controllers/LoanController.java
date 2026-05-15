@@ -49,24 +49,24 @@ public class LoanController {
 
     // InternalAnalyst approves
     @PostMapping("/{id}/approve")
-    public ResponseEntity<LoanResponse> approveLoan(@PathVariable int id,
+    public ResponseEntity<String> approveLoan(@PathVariable int id,
             @Valid @RequestBody ApproveLoanRequest request,
             Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User analyst = userPort.findByUserId(details.getUserId());
-        BankLoan saved = analystUseCase.approveLoan(id, request.getApprovedAmount(),
+        analystUseCase.approveLoan(id, request.getApprovedAmount(),
                 request.getInterestRate(), analyst);
-        return ResponseEntity.ok(toLoanResponse(saved));
+        return ResponseEntity.ok("Préstamo aprobado correctamente");
     }
 
     // InternalAnalyst rejects
     @PostMapping("/{id}/reject")
-    public ResponseEntity<LoanResponse> rejectLoan(@PathVariable int id,
+    public ResponseEntity<String> rejectLoan(@PathVariable int id,
             Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         User analyst = userPort.findByUserId(details.getUserId());
-        BankLoan saved = analystUseCase.rejectLoan(id, analyst);
-        return ResponseEntity.ok(toLoanResponse(saved));
+        analystUseCase.rejectLoan(id, analyst);
+        return ResponseEntity.ok("Préstamo rechazado correctamente");
     }
 
     // InternalAnalyst disburses

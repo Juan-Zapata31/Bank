@@ -31,7 +31,16 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/auth/**").permitAll()
+                                                .requestMatchers(
+                                                                "/",
+                                                                "/financial-system.html",
+                                                                "/index.html",
+                                                                "/auth/**",
+                                                                "/css/**",
+                                                                "/js/**",
+                                                                "/images/**",
+                                                                "/favicon.ico")
+                                                .permitAll()
 
                                                 .requestMatchers("/analyst/**").hasRole("InternalAnalyst")
                                                 .requestMatchers("/admin/users/**").hasRole("InternalAnalyst")

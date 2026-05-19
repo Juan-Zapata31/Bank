@@ -3,8 +3,11 @@ package app.application.adapters.api.controllers;
 import app.application.adapters.api.request.UserRequest;
 import app.application.adapters.api.response.UserResponse;
 import app.application.usecases.AdminUseCase;
+import app.domain.models.Client;
 import app.domain.models.User;
+import app.domain.models.enums.Roles;
 import app.domain.models.enums.UserState;
+import app.domain.ports.ClientPort;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +20,27 @@ import java.util.List;
 public class AdminController {
 
     private final AdminUseCase adminUseCase;
+    private final ClientPort clientPort;
 
-    public AdminController(AdminUseCase adminUseCase) {
+    public AdminController(AdminUseCase adminUseCase, ClientPort clientPort) {
         this.adminUseCase = adminUseCase;
+        this.clientPort = clientPort;
     }
 
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest request) {
         User user = toUser(request);
         adminUseCase.createUser(user);
+
+        if (request.getClientId() != null && request.getRoles() == Roles.IndividualClient) {
+            Client client = clientPort.getClientById(request.getClientId());
+            if (client == null) {
+                throw new RuntimeException("No existe un cliente con ID: " + request.getClientId());
+            }
+            client.setUser(user);
+            clientPort.saveClient(client);
+        }
+
         return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(user));
     }
 

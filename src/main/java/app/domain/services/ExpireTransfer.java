@@ -29,7 +29,7 @@ public class ExpireTransfer {
         this.transactionLogService = transactionLogService;
     }
 
-    @Scheduled(fixedDelay = 300000) // runs every 5 minutes
+    @Scheduled(fixedDelay = 300000)
     public void expireTransfers() {
         LocalDateTime threshold = LocalDateTime.now().minusMinutes(timeoutMinutes);
         List<Transaction> pending = transferPort.findPendingOlderThan(threshold);

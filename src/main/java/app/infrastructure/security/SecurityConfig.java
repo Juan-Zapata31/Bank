@@ -31,7 +31,16 @@ public class SecurityConfig {
                                 .sessionManagement(session -> session
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/auth/**").permitAll()
+                                                .requestMatchers(
+                                                                "/",
+                                                                "/financial-system.html",
+                                                                "/index.html",
+                                                                "/auth/**",
+                                                                "/css/**",
+                                                                "/js/**",
+                                                                "/images/**",
+                                                                "/favicon.ico")
+                                                .permitAll()
 
                                                 .requestMatchers("/analyst/**").hasRole("InternalAnalyst")
                                                 .requestMatchers("/admin/users/**").hasRole("InternalAnalyst")
@@ -65,7 +74,7 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.POST, "/company/transactions/**")
                                                 .hasRole("CompanyEmployee")
                                                 .requestMatchers(HttpMethod.GET, "/company/**")
-                                                .hasAnyRole("CompanyEmployee", "CompanySupervisor")
+                                                .hasAnyRole("CompanyEmployee", "CompanySupervisor", "CompanyClient")
 
                                                 // CompanySupervisor
                                                 .requestMatchers("/company/approvals/**").hasRole("CompanySupervisor")

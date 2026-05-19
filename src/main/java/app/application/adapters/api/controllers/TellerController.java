@@ -29,12 +29,12 @@ public class TellerController {
     }
 
     @PostMapping("/accounts")
-    public ResponseEntity<AccountResponse> openAccount(@Valid @RequestBody AccountRequest request,
+    public ResponseEntity<String> openAccount(@Valid @RequestBody AccountRequest request,
             Authentication authentication) {
         FinancialAuthDetails details = (FinancialAuthDetails) authentication.getDetails();
         Account account = toAccount(request);
-        Account saved = tellerUseCase.openAccount(account, details.getUserId(), details.getUsername());
-        return ResponseEntity.status(HttpStatus.CREATED).body(toAccountResponse(saved));
+        tellerUseCase.openAccount(account, details.getUserId(), details.getUsername());
+        return ResponseEntity.status(HttpStatus.CREATED).body("Cuenta abierta correctamente con ID: " + account.getAccountId());
     }
 
     @GetMapping("/accounts/{accountNumber}")

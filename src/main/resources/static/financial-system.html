@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FinancialSystem</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0f;
+    --surface: #111418;
+    --surface2: #181c22;
+    --surface3: #1e232b;
+    --border: #252b34;
+    --accent: #4ade80;
+    --accent2: #22c55e;
+    --accent-dim: rgba(74,222,128,0.12);
+    --gold: #f59e0b;
+    --red: #ef4444;
+    --blue: #3b82f6;
+    --text: #e8eaed;
+    --text2: #9aa3ae;
+    --text3: #5c6470;
+    --radius: 10px;
+    --radius-lg: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+  /* ── Login ── */
+  #login-screen {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(74,222,128,0.08) 0%, transparent 70%), var(--bg);
+  }
+  .login-box {
+    width: 420px; padding: 48px 40px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--radius-lg);
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+  .login-logo { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--accent); letter-spacing: -0.5px; margin-bottom: 4px; }
+  .login-sub { font-size: 13px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 0.05em; margin-bottom: 40px; }
+  .form-label { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 6px; display: block; }
+  .form-input {
+    width: 100%; padding: 12px 14px; background: var(--surface2); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text); font-family: 'DM Mono', monospace; font-size: 14px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .form-input:focus { border-color: var(--accent); }
+  .form-group { margin-bottom: 20px; }
+  .btn {
+    width: 100%; padding: 13px; background: var(--accent); border: none; border-radius: var(--radius);
+    color: #0a0c0f; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 14px;
+    cursor: pointer; transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  .btn:hover { background: var(--accent2); transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .btn-ghost {
+    background: transparent; border: 1px solid var(--border); color: var(--text2);
+    font-size: 13px; padding: 10px;
+  }
+  .btn-ghost:hover { background: var(--surface2); color: var(--text); }
+  .btn-danger { background: var(--red); color: white; }
+  .btn-danger:hover { background: #dc2626; }
+  .btn-gold { background: var(--gold); }
+  .btn-gold:hover { background: #d97706; }
+  .btn-blue { background: var(--blue); color: white; }
+  .btn-blue:hover { background: #2563eb; }
+  .btn-sm { width: auto; padding: 7px 14px; font-size: 12px; }
+  .error-msg { color: var(--red); font-size: 12px; margin-top: 12px; text-align: center; font-family: 'DM Mono', monospace; }
+
+  /* ── App shell ── */
+  #app { display: none; min-height: 100vh; }
+
+  /* Sidebar */
+  .sidebar {
+    position: fixed; top: 0; left: 0; width: 240px; height: 100vh;
+    background: var(--surface); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; z-index: 100;
+  }
+  .sidebar-header {
+    padding: 24px 20px; border-bottom: 1px solid var(--border);
+  }
+  .sidebar-logo { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--accent); }
+  .sidebar-role {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3);
+    letter-spacing: 0.08em; text-transform: uppercase; margin-top: 4px;
+  }
+  .sidebar-nav { padding: 16px 12px; flex: 1; overflow-y: auto; }
+  .nav-section { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text3); padding: 0 8px; margin: 16px 0 6px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 10px;
+    border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--text2);
+    transition: all 0.15s; margin-bottom: 2px; border: none; background: none; width: 100%; text-align: left;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: var(--accent-dim); color: var(--accent); }
+  .nav-icon { width: 16px; text-align: center; flex-shrink: 0; }
+  .sidebar-footer { padding: 16px 12px; border-top: 1px solid var(--border); }
+  .user-chip {
+    display: flex; align-items: center; gap: 10px; padding: 10px;
+    background: var(--surface2); border-radius: var(--radius); margin-bottom: 10px;
+  }
+  .user-avatar {
+    width: 32px; height: 32px; border-radius: 50%; background: var(--accent-dim);
+    border: 1px solid var(--accent); display: flex; align-items: center; justify-content: center;
+    font-size: 12px; color: var(--accent); font-weight: 600;
+  }
+  .user-info-name { font-size: 13px; font-weight: 500; }
+  .user-info-id { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+
+  /* Main content */
+  .main { margin-left: 240px; padding: 32px; min-height: 100vh; }
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .page-header { margin-bottom: 28px; }
+  .page-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--text); }
+  .page-desc { font-size: 13px; color: var(--text3); margin-top: 4px; }
+
+  /* Cards */
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 24px; margin-bottom: 20px;
+  }
+  .card-title { font-size: 13px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text3); margin-bottom: 16px; }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+
+  /* Stats */
+  .stat-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 20px 24px;
+  }
+  .stat-label { font-size: 11px; color: var(--text3); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .stat-value { font-family: 'DM Serif Display', serif; font-size: 32px; color: var(--text); margin: 6px 0 4px; }
+  .stat-badge {
+    display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
+    border-radius: 20px; font-size: 11px; font-family: 'DM Mono', monospace;
+  }
+  .badge-green { background: rgba(74,222,128,0.12); color: var(--accent); }
+  .badge-red { background: rgba(239,68,68,0.12); color: var(--red); }
+  .badge-gold { background: rgba(245,158,11,0.12); color: var(--gold); }
+  .badge-blue { background: rgba(59,130,246,0.12); color: var(--blue); }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { padding: 11px 14px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); background: var(--surface2); border-bottom: 1px solid var(--border); }
+  td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text2); font-family: 'DM Mono', monospace; font-size: 12px; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .td-name { font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); font-weight: 500; }
+
+  /* Forms inline */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .form-actions { display: flex; gap: 10px; margin-top: 20px; }
+  select.form-input { cursor: pointer; }
+
+  /* Divider */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* Alert */
+  .alert { padding: 12px 16px; border-radius: var(--radius); font-size: 13px; margin-bottom: 16px; }
+  .alert-success { background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.2); color: var(--accent); }
+  .alert-error { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2); color: var(--red); }
+  .alert-info { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.2); color: var(--blue); }
+
+  /* Loading */
+  .loading { text-align: center; padding: 40px; color: var(--text3); font-family: 'DM Mono', monospace; font-size: 13px; }
+  .spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Chip */
+  .chip { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-family: 'DM Mono', monospace; font-weight: 500; }
+
+  /* Empty */
+  .empty { text-align: center; padding: 48px; color: var(--text3); }
+  .empty-icon { font-size: 40px; margin-bottom: 12px; }
+  .empty-text { font-size: 14px; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Centro financiero: Fortis Bank</div>
+    <div class="form-group">
+      <label class="form-label">Usuario</label>
+      <input id="login-username" class="form-input" type="text" placeholder="username" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Contraseña</label>
+      <input id="login-password" class="form-input" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+    </div>
+    <button class="btn" onclick="doLogin()">Iniciar sesión</button>
+    <div id="login-error" class="error-msg"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">Centro financiero: Fortis Bank</div>
+      <div class="sidebar-role" id="sidebar-role">—</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebar-nav"></nav>
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <div>
+          <div class="user-info-name" id="user-name-display">—</div>
+          <div class="user-info-id" id="user-id-display">id: —</div>
+        </div>
+      </div>
+      <button class="btn btn-ghost" onclick="doLogout()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main" id="main-content"></main>
+</div>
+
+<script>
+const API = 'http://localhost:8081';
+let token = null, userId = null, userRole = null, username = null;
+
+// ── Auth ──────────────────────────────────────────────────────────────────────
+async function doLogin() {
+  const u = document.getElementById('login-username').value.trim();
+  const p = document.getElementById('login-password').value;
+  document.getElementById('login-error').textContent = '';
+  try {
+    const res = await api('POST', '/auth/login', { username: u, password: p }, false);
+    token = res.token; userId = res.userId; userRole = res.role; username = res.username;
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    initApp();
+  } catch(e) {
+    document.getElementById('login-error').textContent = '✕ ' + (e.message || 'Credenciales inválidas');
+  }
+}
+
+function doLogout() {
+  token = null; userId = null; userRole = null; username = null;
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-username').value = '';
+  document.getElementById('login-password').value = '';
+}
+
+// ── API helper ────────────────────────────────────────────────────────────────
+async function api(method, path, body = null, auth = true) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (auth && token) headers['Authorization'] = 'Bearer ' + token;
+  const opts = { method, headers, cache: 'no-store' };
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch(API + path, opts);
+  const text = await res.text();
+  if (!text) return {};
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    data = { message: text };
+  }
+  if (!res.ok) throw new Error(data.message || 'Error ' + res.status);
+  return data;
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+const MENUS = {
+  InternalAnalyst: [
+    { section: 'Análisis', items: [
+      { id: 'loans-all', icon: '📋', label: 'Todos los préstamos' },
+      { id: 'audit-logs', icon: '📜', label: 'Bitácora' },
+    ]},
+    { section: 'Administración', items: [
+      { id: 'users-admin', icon: '👥', label: 'Gestionar usuarios' },
+    ]},
+  ],
+  Teller: [
+    { section: 'Caja', items: [
+      { id: 'accounts-open', icon: '🏦', label: 'Abrir cuenta' },
+      { id: 'deposits', icon: '⬇️', label: 'Depósito' },
+      { id: 'withdrawals', icon: '⬆️', label: 'Retiro' },
+      { id: 'accounts-search', icon: '🔍', label: 'Consultar cuenta' },
+    ]},
+  ],
+  CommercialEmployee: [
+    { section: 'Clientes', items: [
+      { id: 'clients-list', icon: '👤', label: 'Ver clientes' },
+      { id: 'clients-natural', icon: '➕', label: 'Registrar persona natural' },
+      { id: 'clients-enterprise', icon: '🏢', label: 'Registrar empresa' },
+    ]},
+    { section: 'Préstamos', items: [
+      { id: 'loans-request', icon: '💰', label: 'Solicitar préstamo' },
+      { id: 'loans-client', icon: '🔍', label: 'Préstamos por cliente' },
+    ]},
+  ],
+  CompanyEmployee: [
+    { section: 'Empresa', items: [
+      { id: 'company-accounts', icon: '🏦', label: 'Cuentas empresa' },
+      { id: 'company-transfer', icon: '💸', label: 'Nueva transferencia' },
+      { id: 'company-pending', icon: '⏳', label: 'Transferencias pendientes' },
+    ]},
+  ],
+  CompanySupervisor: [
+    { section: 'Empresa', items: [
+      { id: 'company-accounts', icon: '🏦', label: 'Cuentas empresa' },
+      { id: 'company-pending', icon: '⏳', label: 'Aprobar transferencias' },
+      { id: 'company-loans', icon: '💰', label: 'Préstamos empresa' },
+    ]},
+  ],
+  CompanyClient: [
+    { section: 'Mi empresa', items: [
+      { id: 'company-accounts', icon: '🏦', label: 'Cuentas' },
+      { id: 'company-loans', icon: '💰', label: 'Préstamos' },
+    ]},
+  ],
+  IndividualClient: [
+    { section: 'Mi banco', items: [
+      { id: 'my-accounts', icon: '🏦', label: 'Mis cuentas' },
+      { id: 'my-loans', icon: '💰', label: 'Mis préstamos' },
+    ]},
+  ],
+};
+
+function initApp() {
+  // Sidebar user info
+  document.getElementById('sidebar-role').textContent = '// ' + userRole;
+  document.getElementById('user-name-display').textContent = username;
+  document.getElementById('user-id-display').textContent = 'id: ' + userId;
+  document.getElementById('user-avatar').textContent = username.charAt(0).toUpperCase();
+
+  // Build nav
+  const nav = document.getElementById('sidebar-nav');
+  nav.innerHTML = '';
+  const menus = MENUS[userRole] || [];
+  menus.forEach(section => {
+    const sec = document.createElement('div');
+    sec.className = 'nav-section';
+    sec.textContent = section.section;
+    nav.appendChild(sec);
+    section.items.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'nav-item';
+      btn.dataset.page = item.id;
+      btn.innerHTML = `<span class="nav-icon">${item.icon}</span><span>${item.label}</span>`;
+      btn.onclick = () => showPage(item.id);
+      nav.appendChild(btn);
+    });
+  });
+
+  // Show first page
+  const first = menus[0]?.items[0]?.id;
+  if (first) showPage(first);
+}
+
+function showPage(pageId) {
+  document.querySelectorAll('.nav-item').forEach(b => {
+    b.classList.toggle('active', b.dataset.page === pageId);
+  });
+  renderPage(pageId);
+}
+
+// ── Page renderer ─────────────────────────────────────────────────────────────
+function renderPage(id) {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `<div class="loading"><span class="spinner"></span>Cargando...</div>`;
+  switch(id) {
+    case 'loans-all': renderLoansAll(); break;
+    case 'audit-logs': renderAuditLogs(); break;
+    case 'users-admin': renderUsersAdmin(); break;
+    case 'accounts-open': renderAccountsOpen(); break;
+    case 'deposits': renderDeposit(); break;
+    case 'withdrawals': renderWithdrawal(); break;
+    case 'accounts-search': renderAccountsSearch(); break;
+    case 'clients-list': renderClientsList(); break;
+    case 'clients-natural': renderClientNaturalForm(); break;
+    case 'clients-enterprise': renderClientEnterpriseForm(); break;
+    case 'loans-request': renderLoanRequest(); break;
+    case 'loans-client': renderLoansByClient(); break;
+    case 'company-accounts': renderCompanyAccounts(); break;
+    case 'company-transfer': renderCompanyTransfer(); break;
+    case 'company-pending': renderCompanyPending(); break;
+    case 'company-loans': renderCompanyLoans(); break;
+    case 'my-accounts': renderMyAccounts(); break;
+    case 'my-loans': renderMyLoans(); break;
+    default: main.innerHTML = '<div class="loading">Página no encontrada</div>';
+  }
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function fmt(n) { return Number(n).toLocaleString('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }); }
+function fmtDate(d) { return d ? new Date(d).toLocaleDateString('es-CO') : '—'; }
+function statusChip(s) {
+  const map = {
+    ACTIVE: 'badge-green', COMPLETED: 'badge-green', APPROVED: 'badge-green', DISBURSED: 'badge-blue',
+    PENDING: 'badge-gold', PENDING_APPROVAL: 'badge-gold', IN_STUDY: 'badge-gold',
+    REJECTED: 'badge-red', FAILED: 'badge-red', EXPIRED: 'badge-red', CANCELLED: 'badge-red', BLOCKED: 'badge-red',
+    INACTIVE: 'badge-red',
+  };
+  return `<span class="chip ${map[s]||'badge-blue'}">${s}</span>`;
+}
+
+function alertHtml(type, msg) { return `<div class="alert alert-${type}">${msg}</div>`; }
+
+// ── PAGES ─────────────────────────────────────────────────────────────────────
+
+// Analyst: all loans
+async function renderLoansAll() {
+  const main = document.getElementById('main-content');
+  try {
+    const loans = await api('GET', '/loans');
+    const pending = loans.filter(l => l.loanState === 'PENDING');
+    main.innerHTML = `
+      <div class="page active">
+        <div class="page-header">
+          <div class="page-title">Gestión de Préstamos</div>
+          <div class="page-desc">Aprueba, rechaza y desembolsa solicitudes</div>
+        </div>
+        <div class="grid-3" style="margin-bottom:24px">
+          <div class="stat-card"><div class="stat-label">Total</div><div class="stat-value">${loans.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Pendientes</div><div class="stat-value" style="color:var(--gold)">${pending.length}</div></div>
+          <div class="stat-card"><div class="stat-label">Desembolsados</div><div class="stat-value" style="color:var(--accent)">${loans.filter(l=>l.loanState==='DISBURSED').length}</div></div>
+        </div>
+        <div id="loan-alert"></div>
+        <div class="card">
+          <div class="card-title">Solicitudes</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Cliente</th><th>Tipo</th><th>Solicitado</th><th>Aprobado</th><th>Estado</th><th>Acciones</th></tr></thead>
+              <tbody>
+                ${loans.length === 0 ? `<tr><td colspan="7"><div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Sin préstamos</div></div></td></tr>` :
+                  loans.map(l => `
+                    <tr>
+                      <td>#${l.bankLoanId}</td>
+                      <td class="td-name">${l.clientName||'—'}</td>
+                      <td>${l.bankLoanType}</td>
+                      <td>${fmt(l.requestedAmount)}</td>
+                      <td>${l.approvedAmount ? fmt(l.approvedAmount) : '—'}</td>
+                      <td>${statusChip(l.loanState)}</td>
+                      <td>
+                        ${l.loanState === 'PENDING' ? `
+                          <button class="btn btn-sm badge-green" style="margin-right:4px" onclick="openApproveModal(${l.bankLoanId})">Aprobar</button>
+                          <button class="btn btn-sm btn-danger" onclick="rejectLoan(${l.bankLoanId})">Rechazar</button>
+                        ` : l.loanState === 'APPROVED' ? `
+                          <button class="btn btn-sm btn-blue" onclick="disburseLoan(${l.bankLoanId})">Desembolsar</button>
+                        ` : '—'}
+                      </td>
+                    </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- Approve Modal -->
+      <div id="approve-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;align-items:center;justify-content:center">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;width:360px">
+          <div style="font-family:'DM Serif Display',serif;font-size:20px;margin-bottom:20px">Aprobar Préstamo #<span id="modal-loan-id"></span></div>
+          <div class="form-group"><label class="form-label">Monto Aprobado</label><input id="modal-amount" class="form-input" type="number" placeholder="500000" /></div>
+          <div class="form-group"><label class="form-label">Tasa de Interés</label><input id="modal-rate" class="form-input" type="number" step="0.01" placeholder="0.05" /></div>
+          <div class="form-actions">
+            <button class="btn" onclick="confirmApprove()">Confirmar</button>
+            <button class="btn btn-ghost" onclick="document.getElementById('approve-modal').style.display='none'">Cancelar</button>
+          </div>
+        </div>
+      </div>`;
+  } catch(e) {
+    main.innerHTML = `<div class="alert alert-error">Error: ${e.message}</div>`;
+  }
+}
+
+function openApproveModal(id) {
+  document.getElementById('modal-loan-id').textContent = id;
+  document.getElementById('modal-amount').value = '';
+  document.getElementById('modal-rate').value = '';
+  document.getElementById('approve-modal').style.display = 'flex';
+}
+
+async function confirmApprove() {
+  const id = document.getElementById('modal-loan-id').textContent;
+  const amount = parseFloat(document.getElementById('modal-amount').value);
+  const rate = parseFloat(document.getElementById('modal-rate').value);
+  document.getElementById('approve-modal').style.display = 'none';
+  try {
+    await api('POST', `/loans/${id}/approve`, { approvedAmount: amount, interestRate: rate });
+    document.getElementById('loan-alert').innerHTML = alertHtml('success', `✓ Préstamo #${id} aprobado correctamente`);
+    setTimeout(renderLoansAll, 1200);
+  } catch(e) {
+    document.getElementById('loan-alert').innerHTML = alertHtml('error', e.message);
+  }
+}
+
+async function rejectLoan(id) {
+  if (!confirm(`¿Rechazar préstamo #${id}?`)) return;
+  try {
+    await api('POST', `/loans/${id}/reject`);
+    document.getElementById('loan-alert').innerHTML = alertHtml('success', `Préstamo #${id} rechazado`);
+    setTimeout(renderLoansAll, 1200);
+  } catch(e) {
+    document.getElementById('loan-alert').innerHTML = alertHtml('error', e.message);
+  }
+}
+
+async function disburseLoan(id) {
+  if (!confirm(`¿Desembolsar préstamo #${id}?`)) return;
+  try {
+    await api('POST', `/loans/${id}/disburse`);
+    document.getElementById('loan-alert').innerHTML = alertHtml('success', `✓ Préstamo #${id} desembolsado`);
+    setTimeout(renderLoansAll, 1200);
+  } catch(e) {
+    document.getElementById('loan-alert').innerHTML = alertHtml('error', e.message);
+  }
+}
+
+// Audit logs
+async function renderAuditLogs() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = ''; 
+  try {
+    const logs = await api('GET', '/analyst/logs');
+    main.innerHTML = `
+      <div class="page active">
+        <div class="page-header">
+          <div class="page-title">Bitácora de Operaciones</div>
+          <div class="page-desc">${logs.length} registros en la bitácora de operaciones</div>
+        </div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Operación</th><th>Tipo transacción</th><th>Responsable</th><th>Fecha</th><th>Estado</th><th>Producto</th></tr></thead>
+              <tbody>
+                ${logs.length === 0 ? `<tr><td colspan="6"><div class="empty"><div class="empty-icon">📜</div><div class="empty-text">Sin registros</div></div></td></tr>` :
+                  logs.map(l => `<tr>
+                    <td>${statusChip(l.operationType)}</td>
+                    <td><span style="color:var(--text2)">${l.transactionType||'—'}</span></td>
+                    <td class="td-name">${l.responsableUser||'—'}</td>
+                    <td>${l.operationDateTime ? new Date(l.operationDateTime).toLocaleString('es-CO') : '—'}</td>
+                    <td>${statusChip(l.transactionState)}</td>
+                    <td><span style="color:var(--text3)">#${l.affectedProductId||'—'}</span></td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
+  } catch(e) { main.innerHTML = alertHtml('error', e.message); }
+}
+
+// Users admin
+async function renderUsersAdmin() {
+  const main = document.getElementById('main-content');
+  try {
+    const users = await api('GET', '/admin/users');
+    main.innerHTML = `
+      <div class="page active">
+        <div class="page-header">
+          <div class="page-title">Gestión de Usuarios</div>
+          <div class="page-desc">${users.length} usuarios en el sistema</div>
+        </div>
+        <div id="users-alert"></div>
+        <div class="card" style="margin-bottom:20px">
+          <div class="card-title">Nuevo Usuario</div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Username</label><input id="nu-username" class="form-input" placeholder="username" /></div>
+            <div class="form-group"><label class="form-label">Contraseña</label><input id="nu-password" class="form-input" type="password" placeholder="••••••" /></div>
+            <div class="form-group"><label class="form-label">Rol</label>
+              <select id="nu-role" class="form-input" onchange="toggleClientIdField()">
+                <option value="Teller">Teller</option>
+                <option value="InternalAnalyst">InternalAnalyst</option>
+                <option value="CommercialEmployee">CommercialEmployee</option>
+                <option value="CompanyEmployee">CompanyEmployee</option>
+                <option value="CompanySupervisor">CompanySupervisor</option>
+                <option value="CompanyClient">CompanyClient</option>
+                <option value="IndividualClient">IndividualClient</option>
+              </select>
+            </div>
+            <div class="form-group"><label class="form-label">NIT Empresa</label><input id="nu-nit" class="form-input" placeholder="900111222-1" /></div>
+            <div class="form-group" id="nu-client-group" style="display:none"><label class="form-label">ID Cliente Natural</label><input id="nu-client-id" class="form-input" type="number" placeholder="123" /></div>
+          </div>
+          <button class="btn btn-sm" onclick="createUser()">Crear usuario</button>
+          <button class="btn btn-sm btn-blue" style="margin-bottom:20px" onclick="exportClientesCSV()">Exportar clientes con usuario</button>
+        </div>
+        <div class="card">
+          <div class="card-title">Usuarios registrados</div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Username</th><th>Rol</th><th>Estado</th><th>NIT Empresa</th></tr></thead>
+              <tbody>
+                ${users.map(u => `<tr>
+                  <td>${u.userId}</td>
+                  <td class="td-name">${u.username}</td>
+                  <td>${statusChip(u.roles)}</td>
+                  <td>${statusChip(u.userState)}</td>
+                  <td>${u.companyNit||'—'}</td>
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
+  } catch(e) { main.innerHTML = alertHtml('error', e.message); }
+}
+
+async function createUser() {
+  const body = {
+    username: document.getElementById('nu-username').value,
+    password: document.getElementById('nu-password').value,
+    roles: document.getElementById('nu-role').value,
+    userState: 'ACTIVE',
+    companyNit: document.getElementById('nu-nit').value || null,
+    clientId: document.getElementById('nu-client-id').value ? Number(document.getElementById('nu-client-id').value) : null,
+  };
+  try {
+    await api('POST', '/admin/users', body);
+    document.getElementById('users-alert').innerHTML = alertHtml('success', `✓ Usuario "${body.username}" creado`);
+    setTimeout(renderUsersAdmin, 1000);
+  } catch(e) {
+    document.getElementById('users-alert').innerHTML = alertHtml('error', e.message);
+  }
+}
+
+function toggleClientIdField() {
+  const role = document.getElementById('nu-role').value;
+  const group = document.getElementById('nu-client-group');
+  group.style.display = role === 'IndividualClient' ? 'block' : 'none';
+}
+
+async function exportClientesCSV() {
+  try {
+    const clients = await api('GET', '/commercial/clients');
+    const conUsuario = clients.filter(c => c.userId !== null);
+
+    const headers = ['clientId', 'fullName', 'documentNumber', 'email', 'phone', 'address', 'birthDate', 'userId', 'username'];
+    const rows = conUsuario.map(c => [
+      c.clientId, c.fullName, c.documentNumber, c.email,
+      c.phone, c.address, c.birthDate || '', c.userId, c.username
+    ]);
+
+    const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'clientes_con_usuario.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    alert('Error al exportar: ' + e.message);
+  }
+}
+
+// Teller: open account
+async function renderAccountsOpen() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Abrir Cuenta</div><div class="page-desc">Registrar nueva cuenta bancaria</div></div>
+      <div id="acc-alert"></div>
+      <div class="card" style="max-width:500px">
+        <div class="form-group"><label class="form-label">ID Cliente</label><input id="oa-client" class="form-input" type="number" placeholder="1" /></div>
+        <div class="form-group"><label class="form-label">Tipo de Cuenta</label>
+          <select id="oa-type" class="form-input">
+            <option value="SAVINGS">SAVINGS — Ahorros</option>
+            <option value="CHECKING">CHECKING — Corriente</option>
+            <option value="PERSONAL">PERSONAL</option>
+            <option value="BUSINESS">BUSINESS — Empresarial</option>
+            <option value="DIGITAL">DIGITAL</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Moneda</label>
+          <select id="oa-currency" class="form-input">
+            <option value="COP">COP — Peso colombiano</option>
+            <option value="USD">USD — Dólar</option>
+            <option value="EUR">EUR — Euro</option>
+          </select>
+        </div>
+        <button class="btn" onclick="openAccount()">Abrir cuenta</button>
+      </div>
+    </div>`;
+}
+
+async function openAccount() {
+  const body = {
+    clientId: parseInt(document.getElementById('oa-client').value),
+    accountType: document.getElementById('oa-type').value,
+    currency: document.getElementById('oa-currency').value,
+  };
+  try {
+    const res = await api('POST', '/teller/accounts', body);
+    document.getElementById('acc-alert').innerHTML = alertHtml('success', `✓ Cuenta creada correctamente — Saldo: ${fmt(res.balance || 0)}`);
+  } catch(e) {
+    document.getElementById('acc-alert').innerHTML = alertHtml('error', e.message);
+  }
+}
+
+// Deposit
+function renderDeposit() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Depósito</div><div class="page-desc">Abonar dinero a una cuenta</div></div>
+      <div id="dep-alert"></div>
+      <div class="card" style="max-width:400px">
+        <div class="form-group"><label class="form-label">Número de Cuenta</label><input id="dep-account" class="form-input" type="number" placeholder="3" /></div>
+        <div class="form-group"><label class="form-label">Monto</label><input id="dep-amount" class="form-input" type="number" placeholder="500000" /></div>
+        <button class="btn" onclick="doDeposit()">Realizar depósito</button>
+      </div>
+    </div>`;
+}
+
+async function doDeposit() {
+  try {
+    await api('POST', '/teller/deposits', { accountNumber: parseInt(document.getElementById('dep-account').value), amount: parseFloat(document.getElementById('dep-amount').value) });
+    document.getElementById('dep-alert').innerHTML = alertHtml('success', '✓ Depósito realizado correctamente');
+  } catch(e) { document.getElementById('dep-alert').innerHTML = alertHtml('error', e.message); }
+}
+
+// Withdrawal
+function renderWithdrawal() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Retiro</div><div class="page-desc">Retirar dinero de una cuenta</div></div>
+      <div id="wit-alert"></div>
+      <div class="card" style="max-width:400px">
+        <div class="form-group"><label class="form-label">Número de Cuenta</label><input id="wit-account" class="form-input" type="number" placeholder="3" /></div>
+        <div class="form-group"><label class="form-label">Monto</label><input id="wit-amount" class="form-input" type="number" placeholder="100000" /></div>
+        <button class="btn" onclick="doWithdrawal()">Realizar retiro</button>
+      </div>
+    </div>`;
+}
+
+async function doWithdrawal() {
+  try {
+    await api('POST', '/teller/withdrawals', { accountNumber: parseInt(document.getElementById('wit-account').value), amount: parseFloat(document.getElementById('wit-amount').value) });
+    document.getElementById('wit-alert').innerHTML = alertHtml('success', '✓ Retiro realizado correctamente');
+  } catch(e) { document.getElementById('wit-alert').innerHTML = alertHtml('error', e.message); }
+}
+
+// Search account
+function renderAccountsSearch() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Consultar Cuenta</div></div>
+      <div id="search-result"></div>
+      <div class="card" style="max-width:400px">
+        <div class="form-group"><label class="form-label">Número de Cuenta</label><input id="srch-account" class="form-input" type="number" placeholder="3" /></div>
+        <button class="btn" onclick="searchAccount()">Consultar</button>
+      </div>
+    </div>`;
+}
+
+async function searchAccount() {
+  try {
+    const a = await api('GET', `/teller/accounts/${document.getElementById('srch-account').value}`);
+    document.getElementById('search-result').innerHTML = `
+      <div class="card" style="max-width:500px;margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+          <div><div class="stat-value">${fmt(a.balance)}</div><div style="font-size:12px;color:var(--text3)">Cuenta #${a.accountId}</div></div>
+          ${statusChip(a.accountState)}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px">
+          <div><div class="stat-label">Titular</div><div style="margin-top:4px">${a.clientName||'—'}</div></div>
+          <div><div class="stat-label">Tipo</div><div style="margin-top:4px">${a.accountType}</div></div>
+          <div><div class="stat-label">Moneda</div><div style="margin-top:4px">${a.currency}</div></div>
+          <div><div class="stat-label">Apertura</div><div style="margin-top:4px">${fmtDate(a.creationDate)}</div></div>
+        </div>
+      </div>`;
+  } catch(e) { document.getElementById('search-result').innerHTML = alertHtml('error', e.message); }
+}
+
+// Clients list
+async function renderClientsList() {
+  const main = document.getElementById('main-content');
+  try {
+    const clients = await api('GET', '/commercial/clients');
+    main.innerHTML = `
+      <div class="page active">
+        <div class="page-header"><div class="page-title">Clientes</div><div class="page-desc">${clients.length} clientes registrados</div></div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Nombre</th><th>Documento</th><th>Email</th><th>Teléfono</th><th>Nacimiento</th></tr></thead>
+              <tbody>
+                ${clients.map(c => `<tr>
+                  <td>${c.clientId}</td>
+                  <td class="td-name">${c.fullName}</td>
+                  <td>${c.documentNumber}</td>
+                  <td>${c.email}</td>
+                  <td>${c.phone}</td>
+                  <td>${fmtDate(c.birthDate)}</td>
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
+  } catch(e) { main.innerHTML = alertHtml('error', e.message); }
+}
+
+// Client natural form
+function renderClientNaturalForm() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Registrar Persona Natural</div></div>
+      <div id="cn-alert"></div>
+      <div class="card" style="max-width:600px">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Nombre completo</label><input id="cn-name" class="form-input" placeholder="Juan Pérez" /></div>
+          <div class="form-group"><label class="form-label">Documento</label><input id="cn-doc" class="form-input" placeholder="1100000001" /></div>
+          <div class="form-group"><label class="form-label">Email</label><input id="cn-email" class="form-input" type="email" placeholder="juan@mail.com" /></div>
+          <div class="form-group"><label class="form-label">Teléfono</label><input id="cn-phone" class="form-input" placeholder="3001234567" /></div>
+          <div class="form-group"><label class="form-label">Dirección</label><input id="cn-address" class="form-input" placeholder="Calle 1 # 1-1" /></div>
+          <div class="form-group"><label class="form-label">Fecha nacimiento</label><input id="cn-birth" class="form-input" type="date" /></div>
+        </div>
+        <button class="btn" onclick="createNaturalClient()">Registrar cliente</button>
+      </div>
+    </div>`;
+}
+
+async function createNaturalClient() {
+  const body = {
+    fullName: document.getElementById('cn-name').value,
+    documentNumber: document.getElementById('cn-doc').value,
+    email: document.getElementById('cn-email').value,
+    phone: document.getElementById('cn-phone').value,
+    address: document.getElementById('cn-address').value,
+    birthDate: document.getElementById('cn-birth').value,
+  };
+  try {
+    const res = await api('POST', '/commercial/clients/natural', body);
+    document.getElementById('cn-alert').innerHTML = alertHtml('success', `✓ Cliente "${res.fullName}" registrado con ID ${res.clientId}`);
+  } catch(e) { document.getElementById('cn-alert').innerHTML = alertHtml('error', e.message); }
+}
+
+// Client enterprise form
+function renderClientEnterpriseForm() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Registrar Empresa Cliente</div></div>
+      <div id="ce-alert"></div>
+      <div class="card" style="max-width:600px">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Razón Social</label><input id="ce-name" class="form-input" placeholder="Empresa S.A.S." /></div>
+          <div class="form-group"><label class="form-label">Nombre empresa</label><input id="ce-company" class="form-input" placeholder="Empresa S.A.S." /></div>
+          <div class="form-group"><label class="form-label">NIT</label><input id="ce-nit" class="form-input" placeholder="900111222-1" /></div>
+          <div class="form-group"><label class="form-label">Email</label><input id="ce-email" class="form-input" type="email" placeholder="contacto@empresa.com" /></div>
+          <div class="form-group"><label class="form-label">Teléfono</label><input id="ce-phone" class="form-input" placeholder="6011234567" /></div>
+          <div class="form-group"><label class="form-label">Dirección</label><input id="ce-address" class="form-input" placeholder="Calle 80 # 10-20" /></div>
+          <div class="form-group"><label class="form-label">Representante Legal (documento)</label><input id="ce-rep" class="form-input" placeholder="1100000001" /></div>
+        </div>
+        <button class="btn" onclick="createEnterpriseClient()">Registrar empresa</button>
+      </div>
+    </div>`;
+}
+
+async function createEnterpriseClient() {
+  const body = {
+    fullName: document.getElementById('ce-name').value,
+    companyName: document.getElementById('ce-company').value,
+    nit: document.getElementById('ce-nit').value,
+    email: document.getElementById('ce-email').value,
+    phone: document.getElementById('ce-phone').value,
+    address: document.getElementById('ce-address').value,
+    legalRepresentative: document.getElementById('ce-rep').value,
+  };
+  try {
+    const res = await api('POST', '/commercial/clients/enterprise', body);
+    document.getElementById('ce-alert').innerHTML = alertHtml('success', `✓ Empresa "${res.fullName}" registrada con ID ${res.clientId}`);
+  } catch(e) { document.getElementById('ce-alert').innerHTML = alertHtml('error', e.message); }
+}
+
+// Loan request
+async function renderLoanRequest() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Solicitar Préstamo</div></div>
+      <div id="lr-alert"></div>
+      <div class="card" style="max-width:500px">
+        <div class="form-group"><label class="form-label">ID Cliente</label><input id="lr-client" class="form-input" type="number" placeholder="1" /></div>
+        <div class="form-group"><label class="form-label">Tipo de Préstamo</label>
+          <select id="lr-type" class="form-input">
+            <option value="PERSONAL">PERSONAL</option>
+            <option value="MORTGAGE">MORTGAGE — Hipotecario</option>
+            <option value="VEHICLE">VEHICLE — Vehículo</option>
+            <option value="BUSINESS">BUSINESS — Empresarial</option>
+            <option value="STUDENT">STUDENT — Educativo</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Monto Solicitado</label><input id="lr-amount" class="form-input" type="number" placeholder="1000000" /></div>
+        <div class="form-group"><label class="form-label">Plazo (meses)</label><input id="lr-term" class="form-input" type="number" placeholder="12" /></div>
+        <div class="form-group"><label class="form-label">Cuenta Destino (accountId)</label><input id="lr-account" class="form-input" type="number" placeholder="4" /></div>
+        <button class="btn" onclick="requestLoan()">Solicitar préstamo</button>
+      </div>
+    </div>`;
+}
+
+async function requestLoan() {
+  const body = {
+    bankLoanType: document.getElementById('lr-type').value,
+    clientId: parseInt(document.getElementById('lr-client').value),
+    requestedAmount: parseFloat(document.getElementById('lr-amount').value),
+    termMonths: parseInt(document.getElementById('lr-term').value),
+    destinationAccount: parseInt(document.getElementById('lr-account').value),
+  };
+  try {
+    const res = await api('POST', '/loans', body);
+    document.getElementById('lr-alert').innerHTML = alertHtml('success', `✓ Préstamo #${res.bankLoanId} creado en estado ${res.loanState}`);
+  } catch(e) { document.getElementById('lr-alert').innerHTML = alertHtml('error', e.message); }
+}
+
+// Loans by client
+function renderLoansByClient() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Préstamos por Cliente</div></div>
+      <div class="card" style="max-width:400px;margin-bottom:20px">
+        <div class="form-group"><label class="form-label">ID Cliente</label><input id="lbc-client" class="form-input" type="number" placeholder="1" /></div>
+        <button class="btn btn-sm" onclick="searchLoansByClient()">Buscar</button>
+      </div>
+      <div id="lbc-result"></div>
+    </div>`;
+}
+
+async function searchLoansByClient() {
+  const cid = document.getElementById('lbc-client').value;
+  try {
+    const loans = await api('GET', `/commercial/loans/client/${cid}`);
+    document.getElementById('lbc-result').innerHTML = `
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Tipo</th><th>Solicitado</th><th>Aprobado</th><th>Plazo</th><th>Estado</th></tr></thead>
+            <tbody>
+              ${loans.length === 0 ? `<tr><td colspan="6"><div class="empty"><div class="empty-text">Sin préstamos</div></div></td></tr>` :
+                loans.map(l => `<tr>
+                  <td>#${l.bankLoanId}</td><td>${l.bankLoanType}</td>
+                  <td>${fmt(l.requestedAmount)}</td>
+                  <td>${l.approvedAmount ? fmt(l.approvedAmount) : '—'}</td>
+                  <td>${l.termMonths} meses</td>
+                  <td>${statusChip(l.loanState)}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+  } catch(e) { document.getElementById('lbc-result').innerHTML = alertHtml('error', e.message); }
+}
+
+// Company accounts
+async function renderCompanyAccounts() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Cuentas de la Empresa</div></div>
+      <div class="card" style="max-width:400px;margin-bottom:20px">
+        <div class="form-group"><label class="form-label">ID Cliente Empresa</label><input id="ca-client" class="form-input" type="number" placeholder="6" /></div>
+        <button class="btn btn-sm" onclick="searchCompanyAccounts()">Buscar</button>
+      </div>
+      <div id="ca-result"></div>
+    </div>`;
+}
+
+async function searchCompanyAccounts() {
+  const cid = document.getElementById('ca-client').value;
+  try {
+    const accounts = await api('GET', `/company/accounts/${cid}`);
+    document.getElementById('ca-result').innerHTML = `
+      <div class="grid-2">
+        ${accounts.map(a => `
+          <div class="stat-card">
+            <div class="stat-label">${a.accountType} · #${a.accountId}</div>
+            <div class="stat-value">${fmt(a.balance)}</div>
+            <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+              ${statusChip(a.accountState)}
+              <span style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">${a.currency}</span>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  } catch(e) { document.getElementById('ca-result').innerHTML = alertHtml('error', e.message); }
+}
+
+// Company transfer
+function renderCompanyTransfer() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Nueva Transferencia</div><div class="page-desc">Monto mayor a $1.000.000 requiere aprobación del supervisor</div></div>
+      <div id="ct-alert"></div>
+      <div class="card" style="max-width:500px">
+        <div class="form-group"><label class="form-label">Cuenta Origen</label><input id="ct-origin" class="form-input" type="number" placeholder="5" /></div>
+        <div class="form-group"><label class="form-label">Cuenta Destino</label><input id="ct-dest" class="form-input" type="number" placeholder="6" /></div>
+        <div class="form-group"><label class="form-label">Monto</label><input id="ct-amount" class="form-input" type="number" placeholder="2000000" /></div>
+        <div class="form-group"><label class="form-label">Moneda</label>
+          <select id="ct-currency" class="form-input">
+            <option value="COP">COP</option><option value="USD">USD</option><option value="EUR">EUR</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">Descripción</label><input id="ct-desc" class="form-input" placeholder="Pago nómina enero" /></div>
+        <button class="btn" onclick="createTransfer()">Enviar transferencia</button>
+      </div>
+    </div>`;
+}
+
+async function createTransfer() {
+  const body = {
+    originAccount: parseInt(document.getElementById('ct-origin').value),
+    destinationAccount: parseInt(document.getElementById('ct-dest').value),
+    amount: parseFloat(document.getElementById('ct-amount').value),
+    currency: document.getElementById('ct-currency').value,
+    description: document.getElementById('ct-desc').value,
+  };
+  try {
+    const res = await api('POST', '/company/transactions', body);
+    const msg = res.transactionState === 'PENDING'
+      ? `⏳ Transferencia #${res.transactionId} en espera de aprobación del supervisor`
+      : `✓ Transferencia #${res.transactionId} ejecutada correctamente`;
+    document.getElementById('ct-alert').innerHTML = alertHtml(res.transactionState === 'PENDING' ? 'info' : 'success', msg);
+  } catch(e) { document.getElementById('ct-alert').innerHTML = alertHtml('error', e.message); }
+}
+
+// Company pending transfers
+async function renderCompanyPending() {
+  const main = document.getElementById('main-content');
+  try {
+    const transfers = await api('GET', '/company/transactions/pending');
+    main.innerHTML = `
+      <div class="page active">
+        <div class="page-header"><div class="page-title">Transferencias Pendientes</div><div class="page-desc">${transfers.length} en espera de aprobación</div></div>
+        <div id="cp-alert"></div>
+        <div class="card">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>ID</th><th>Origen</th><th>Destino</th><th>Monto</th><th>Descripción</th><th>Fecha</th><th>Acciones</th></tr></thead>
+              <tbody>
+                ${transfers.length === 0 ? `<tr><td colspan="7"><div class="empty"><div class="empty-icon">✅</div><div class="empty-text">Sin transferencias pendientes</div></div></td></tr>` :
+                  transfers.map(t => `<tr>
+                    <td>#${t.transactionId}</td>
+                    <td>${t.originAccount}</td>
+                    <td>${t.destinationAccount}</td>
+                    <td style="color:var(--gold)">${fmt(t.amount)}</td>
+                    <td>${t.description||'—'}</td>
+                    <td>${t.createdAt ? new Date(t.createdAt).toLocaleString('es-CO') : '—'}</td>
+                    <td>
+                      <button class="btn btn-sm badge-green" style="margin-right:4px" onclick="approveTransfer(${t.transactionId})">Aprobar</button>
+                      <button class="btn btn-sm btn-danger" onclick="rejectTransfer(${t.transactionId})">Rechazar</button>
+                    </td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
+  } catch(e) { main.innerHTML = alertHtml('error', e.message); }
+}
+
+async function approveTransfer(id) {
+  try {
+    await api('POST', `/company/approvals/${id}/approve`);
+    document.getElementById('cp-alert').innerHTML = alertHtml('success', `✓ Transferencia #${id} aprobada y ejecutada`);
+    setTimeout(renderCompanyPending, 1200);
+  } catch(e) { document.getElementById('cp-alert').innerHTML = alertHtml('error', e.message); }
+}
+
+async function rejectTransfer(id) {
+  try {
+    await api('POST', `/company/approvals/${id}/reject`);
+    document.getElementById('cp-alert').innerHTML = alertHtml('success', `Transferencia #${id} rechazada`);
+    setTimeout(renderCompanyPending, 1200);
+  } catch(e) { document.getElementById('cp-alert').innerHTML = alertHtml('error', e.message); }
+}
+
+// Company loans
+async function renderCompanyLoans() {
+  const main = document.getElementById('main-content');
+  main.innerHTML = `
+    <div class="page active">
+      <div class="page-header"><div class="page-title">Préstamos de la Empresa</div></div>
+      <div class="card" style="max-width:400px;margin-bottom:20px">
+        <div class="form-group"><label class="form-label">ID Cliente Empresa</label><input id="cl-client" class="form-input" type="number" placeholder="6" /></div>
+        <button class="btn btn-sm" onclick="searchCompanyLoans()">Buscar</button>
+      </div>
+      <div id="cl-result"></div>
+    </div>`;
+}
+
+async function searchCompanyLoans() {
+  const cid = document.getElementById('cl-client').value;
+  try {
+    const loans = await api('GET', `/company/loans/${cid}`);
+    document.getElementById('cl-result').innerHTML = `
+      <div class="card">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>Tipo</th><th>Solicitado</th><th>Aprobado</th><th>Estado</th></tr></thead>
+            <tbody>
+              ${loans.length === 0 ? `<tr><td colspan="5"><div class="empty"><div class="empty-text">Sin préstamos</div></div></td></tr>` :
+                loans.map(l => `<tr>
+                  <td>#${l.bankLoanId}</td><td>${l.bankLoanType}</td>
+                  <td>${fmt(l.requestedAmount)}</td>
+                  <td>${l.approvedAmount ? fmt(l.approvedAmount) : '—'}</td>
+                  <td>${statusChip(l.loanState)}</td>
+                </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+  } catch(e) { document.getElementById('cl-result').innerHTML = alertHtml('error', e.message); }
+}
+
+// My accounts (individual client)
+async function renderMyAccounts() {
+  const main = document.getElementById('main-content');
+  try {
+    const accounts = await api('GET', `/teller/accounts/client/${userId}`);
+    main.innerHTML = `
+      <div class="page active">
+        <div class="page-header"><div class="page-title">Mis Cuentas</div></div>
+        ${accounts.length === 0 ?
+          `<div class="empty"><div class="empty-icon">🏦</div><div class="empty-text">No tienes cuentas registradas</div></div>` :
+          `<div class="grid-2">
+            ${accounts.map(a => `
+              <div class="stat-card">
+                <div class="stat-label">${a.accountType} · #${a.accountId}</div>
+                <div class="stat-value">${fmt(a.balance)}</div>
+                <div style="margin-top:8px;display:flex;justify-content:space-between">
+                  ${statusChip(a.accountState)}
+                  <span style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace">${a.currency}</span>
+                </div>
+              </div>`).join('')}
+          </div>`}
+      </div>`;
+  } catch(e) { main.innerHTML = alertHtml('error', e.message); }
+}
+
+// My loans (individual client)
+async function renderMyLoans() {
+  const main = document.getElementById('main-content');
+  try {
+    const loans = await api('GET', `/loans/client/${userId}`);
+    main.innerHTML = `
+      <div class="page active">
+        <div class="page-header"><div class="page-title">Mis Préstamos</div></div>
+        ${loans.length === 0 ?
+          `<div class="empty"><div class="empty-icon">💰</div><div class="empty-text">No tienes préstamos registrados</div></div>` :
+          `<div class="card">
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>ID</th><th>Tipo</th><th>Solicitado</th><th>Aprobado</th><th>Plazo</th><th>Estado</th></tr></thead>
+                <tbody>
+                  ${loans.map(l => `<tr>
+                    <td>#${l.bankLoanId}</td><td>${l.bankLoanType}</td>
+                    <td>${fmt(l.requestedAmount)}</td>
+                    <td>${l.approvedAmount ? fmt(l.approvedAmount) : '—'}</td>
+                    <td>${l.termMonths} meses</td>
+                    <td>${statusChip(l.loanState)}</td>
+                  </tr>`).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>`}
+      </div>`;
+  } catch(e) { main.innerHTML = alertHtml('error', e.message); }
+}
+</script>
+</body>
+</html>

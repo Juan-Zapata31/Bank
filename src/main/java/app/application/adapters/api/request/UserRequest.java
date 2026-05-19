@@ -20,4 +20,5 @@ public class UserRequest {
     private Roles roles;
     private UserState userState;
     private String companyNit;
+    private Long clientId;
 }

@@ -574,7 +574,7 @@ async function renderUsersAdmin() {
             <div class="form-group"><label class="form-label">Username</label><input id="nu-username" class="form-input" placeholder="username" /></div>
             <div class="form-group"><label class="form-label">Contraseña</label><input id="nu-password" class="form-input" type="password" placeholder="••••••" /></div>
             <div class="form-group"><label class="form-label">Rol</label>
-              <select id="nu-role" class="form-input">
+              <select id="nu-role" class="form-input" onchange="toggleClientIdField()">
                 <option value="Teller">Teller</option>
                 <option value="InternalAnalyst">InternalAnalyst</option>
                 <option value="CommercialEmployee">CommercialEmployee</option>
@@ -585,6 +585,7 @@ async function renderUsersAdmin() {
               </select>
             </div>
             <div class="form-group"><label class="form-label">NIT Empresa (opcional)</label><input id="nu-nit" class="form-input" placeholder="900111222-1" /></div>
+            <div class="form-group" id="nu-client-group" style="display:none"><label class="form-label">ID Cliente Natural (opcional)</label><input id="nu-client-id" class="form-input" type="number" placeholder="123" /></div>
           </div>
           <button class="btn btn-sm" onclick="createUser()">Crear usuario</button>
           <button class="btn btn-sm btn-blue" style="margin-bottom:20px" onclick="exportClientesCSV()">Exportar clientes con usuario</button>
@@ -617,6 +618,7 @@ async function createUser() {
     roles: document.getElementById('nu-role').value,
     userState: 'ACTIVE',
     companyNit: document.getElementById('nu-nit').value || null,
+    clientId: document.getElementById('nu-client-id').value ? Number(document.getElementById('nu-client-id').value) : null,
   };
   try {
     await api('POST', '/admin/users', body);
@@ -625,6 +627,12 @@ async function createUser() {
   } catch(e) {
     document.getElementById('users-alert').innerHTML = alertHtml('error', e.message);
   }
+}
+
+function toggleClientIdField() {
+  const role = document.getElementById('nu-role').value;
+  const group = document.getElementById('nu-client-group');
+  group.style.display = role === 'IndividualClient' ? 'block' : 'none';
 }
 
 async function exportClientesCSV() {

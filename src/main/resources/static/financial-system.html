@@ -587,6 +587,7 @@ async function renderUsersAdmin() {
             <div class="form-group"><label class="form-label">NIT Empresa (opcional)</label><input id="nu-nit" class="form-input" placeholder="900111222-1" /></div>
           </div>
           <button class="btn btn-sm" onclick="createUser()">Crear usuario</button>
+          <button class="btn btn-sm btn-blue" style="margin-bottom:20px" onclick="exportClientesCSV()">Exportar clientes con usuario</button>
         </div>
         <div class="card">
           <div class="card-title">Usuarios registrados</div>
@@ -623,6 +624,30 @@ async function createUser() {
     setTimeout(renderUsersAdmin, 1000);
   } catch(e) {
     document.getElementById('users-alert').innerHTML = alertHtml('error', e.message);
+  }
+}
+
+async function exportClientesCSV() {
+  try {
+    const clients = await api('GET', '/commercial/clients');
+    const conUsuario = clients.filter(c => c.userId !== null);
+
+    const headers = ['clientId', 'fullName', 'documentNumber', 'email', 'phone', 'address', 'birthDate', 'userId', 'username'];
+    const rows = conUsuario.map(c => [
+      c.clientId, c.fullName, c.documentNumber, c.email,
+      c.phone, c.address, c.birthDate || '', c.userId, c.username
+    ]);
+
+    const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'clientes_con_usuario.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch(e) {
+    alert('Error al exportar: ' + e.message);
   }
 }
 
@@ -664,7 +689,7 @@ async function openAccount() {
   };
   try {
     const res = await api('POST', '/teller/accounts', body);
-    document.getElementById('acc-alert').innerHTML = alertHtml('success', `✓ Cuenta #${res.accountId} creada para ${res.clientName} — Saldo: ${fmt(res.balance)}`);
+    document.getElementById('acc-alert').innerHTML = alertHtml('success', `✓ Cuenta creada correctamente — Saldo: ${fmt(res.balance || 0)}`);
   } catch(e) {
     document.getElementById('acc-alert').innerHTML = alertHtml('error', e.message);
   }

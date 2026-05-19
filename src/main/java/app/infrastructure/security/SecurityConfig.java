@@ -74,7 +74,7 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.POST, "/company/transactions/**")
                                                 .hasRole("CompanyEmployee")
                                                 .requestMatchers(HttpMethod.GET, "/company/**")
-                                                .hasAnyRole("CompanyEmployee", "CompanySupervisor")
+                                                .hasAnyRole("CompanyEmployee", "CompanySupervisor", "CompanyClient")
 
                                                 // CompanySupervisor
                                                 .requestMatchers("/company/approvals/**").hasRole("CompanySupervisor")
